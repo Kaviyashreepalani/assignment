@@ -1,8 +1,9 @@
-# The only two things you must fill in:
-EMAIL = "your_email@ds.study.iitm.ac.in"
-AIPIPE_TOKEN = "PASTE_YOUR_AIPIPE_TOKEN"
-# Fixed — do not change
+import os
+
+EMAIL = os.getenv("EMAIL")
+AIPIPE_TOKEN = os.getenv("AIPIPE_TOKEN")
+
 AIPIPE_BASE = "https://aipipe.org/openai/v1"
 TEXT_MODEL = "gpt-4o-mini"
-VISION_MODEL = "gpt-4o"          # full gpt-4o reads charts/receipts far better than mini
+VISION_MODEL = "gpt-4o"
 EMBED_MODEL = "text-embedding-3-small"
