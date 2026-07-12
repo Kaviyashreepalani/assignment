@@ -95,9 +95,35 @@ def parse_json(s):
     except Exception:
         m = re.search(r"\{.*\}", s, re.DOTALL)
         return json.loads(m.group(0)) if m else {}
-@app.get("/")
-async def root():
-    return {"ok": True, "email": config.EMAIL}
+from fastapi import Request
+
+@app.api_route("/", methods=["GET", "POST"])
+async def root(request: Request):
+    if request.method == "GET":
+        return {"ok": True, "email": config.EMAIL}
+
+    body = await request.json()
+
+    # Route based on request body
+    if "audio_base64" in body:
+        return await answer_audio(request)
+
+    if "image_base64" in body:
+        return await answer_image(request)
+
+    if "invoice_text" in body:
+        return await extract(request)
+
+    if "schema" in body and "text" in body:
+        return await dynamic_extract(request)
+
+    if "query" in body and "candidates" in body:
+        return await rank(request)
+
+    if "problem" in body:
+        return await solve(request)
+
+    return {"error": "Unknown request"}
 # ================= Q2: /answer-image =================
 def normalize_answer(ans):
     """Clean a vision answer so it matches the grader's expected string.
