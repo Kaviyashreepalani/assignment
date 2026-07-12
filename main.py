@@ -1,3 +1,16 @@
+from fastapi import Request
+
+@app.middleware("http")
+async def log_requests(request: Request, call_next):
+    print(f"{request.method} {request.url.path}")
+    response = await call_next(request)
+    print("Status:", response.status_code)
+    return response
+
+
+
+
+
 import json, re, base64, hashlib
 from statistics import mean, median, pstdev, pvariance, mode
 from fastapi import FastAPI, Request
