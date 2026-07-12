@@ -721,15 +721,3 @@ async def solve(request: Request):
 
 
 
-from fastapi import Request
-
-@app.api_route("/{path:path}", methods=["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS", "HEAD"])
-async def catch_all(path: str, request: Request):
-    body = await request.body()
-    print("========== UNKNOWN REQUEST ==========")
-    print("METHOD:", request.method)
-    print("PATH:", request.url.path)
-    print("HEADERS:", dict(request.headers))
-    print("BODY:", body.decode(errors="ignore"))
-    print("====================================")
-    return {"path": path}
